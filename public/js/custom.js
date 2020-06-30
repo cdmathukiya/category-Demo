@@ -1,29 +1,3 @@
-function notification(msg,type,time) {
-	$.notify({
-            message: msg
-        },{
-            // settings
-            type: (type) ? type : 'danger',
-            placement: {
-                from: "bottom",
-                align: "right",
-            },
-            delay: (typeof(time) != "undefined" && time !== null) ? time : 200,
-            z_index: 9999,
-    });
-}
-
-function generalNotification(message,type) {
-	var var_type = typeof message;
-    
-    if (var_type === 'object') {
-        $.each(message, function (i, val) {
-            notification(val,type);
-        });
-    } else {
-        notification(message,type);
-    }
-}
 
 function scrollTop() {
 	$("body").animate({
@@ -42,7 +16,7 @@ $(document).ready(function(){
     $(document).off('click', '.add-btn').on('click', '.add-btn', function () {
         var addBtn = $(this);
         var id = addBtn.closest('.category-detail').find('.edit-text').attr('data-id');
-        console.log(id);
+
         var li = $(".blank-li").clone();
         li.removeClass('d-none blank-li');
         li.find('.edit-text').attr('data-parent',id);
@@ -123,7 +97,6 @@ $(document).ready(function(){
         
         if(newVal == "" || newVal == null){
             alert('Please insert category name');
-            generalNotification('Please insert category name', 'danger')
             return false;
         }
 
@@ -133,7 +106,7 @@ $(document).ready(function(){
             url: saveUrl,
             type: 'post',
             dataType: 'json',
-            data: {'name': newVal, 'id' : id, 'parent_id' : parentId, '_token' : $('meta[name="csrf-token"]').attr('content')},
+            data: {'name': newVal, 'id' : id, 'parent_id' : parentId},
             headers: {
 		        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		    },
@@ -146,7 +119,7 @@ $(document).ready(function(){
                 if (result.status == 'validation') {
                     $.each(result, function(i, val) {
                         if (val != "") {
-                            form.find("#" + i + "_error").text(val);
+                            $('.submit_notification').html('<span class="text-success error">' + val + '</span>');
                         }
                     });
                     scrollTop();
@@ -156,7 +129,6 @@ $(document).ready(function(){
                     saveBtn.closest('.category-detail').find('.display-text, .edit-group').removeClass('d-none');
                     saveBtn.closest('.category-detail').find('.display-text').text(newVal);
 
-                    console.log(result.id);
                     saveBtn.closest('.category-detail').find('.edit-text').attr('data-id',result.id);
                     saveBtn.closest('.category-detail').find('.edit-text, .add-btn, .delete-btn').attr('data-id',result.id);
                     $('.submit_notification').html('<span class="text-success error">' + result.message + '</span>');

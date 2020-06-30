@@ -35,6 +35,8 @@
                 <div class="nestable-list">
                 @if(!empty($categoryArray) && count($categoryArray))
                     @include('category.manage_child',['categoryArray' => $categoryArray])
+                @else
+                <ul></ul>
                 @endif
                 </div>
             </div>
