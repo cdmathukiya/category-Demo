@@ -1,0 +1,13 @@
+/*Write custom css here*/
+.desc-column{
+	width: 30px;
+	word-wrap: break-word;
+}
+.img-column{
+	width: 30%;
+	word-wrap: break-word;
+}
+.small-img{
+	width: 80px;
+	height: 80px;
+}
